@@ -7,21 +7,40 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 
+	"github.com/go-playground/form"
+
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
-	"github.com/mitchellh/mapstructure"
 )
 
+func Bool(b bool) *bool {
+	return &b
+}
+
+func Int(i int) *int {
+	return &i
+}
+
+func String(s string) *string {
+	return &s
+}
+
 type Config struct {
+	Address  string
 	User     string
 	Password string
 }
 
 type Client struct {
-	user, password string
-	client         *http.Client
+	address, user, password string
+	client                  *http.Client
+}
+
+func DefaultConfig() *Config {
+	return &Config{
+		Address: "https://robot-ws.your-server.de/",
+	}
 }
 
 func NewClient(config *Config) *Client {
@@ -29,16 +48,23 @@ func NewClient(config *Config) *Client {
 		client: cleanhttp.DefaultClient(),
 	}
 
-	if config != nil {
-		c.user = config.User
-		c.password = config.Password
+	if config == nil {
+		config = DefaultConfig()
+	}
+
+	c.address = config.Address
+	c.user = config.User
+	c.password = config.Password
+
+	if !strings.HasSuffix(c.address, "/") {
+		c.address += "/"
 	}
 
 	return c
 }
 
 func (c *Client) do(method, url string, body url.Values) ([]byte, error) {
-	url = "https://robot-ws.your-server.de/" + url
+	url = c.address + url
 
 	var reader io.Reader
 	if body != nil {
@@ -69,78 +95,34 @@ func (c *Client) do(method, url string, body url.Values) ([]byte, error) {
 	return content, nil
 }
 
-func (c *Client) list(url string) ([]interface{}, error) {
+func (c *Client) list(url string, d interface{}) error {
 	content, err := c.do("GET", url, nil)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var d []interface{}
-	if err := json.Unmarshal(content, &d); err != nil {
-		return nil, err
-	}
-
-	return d, nil
+	return json.Unmarshal(content, d)
 }
 
-func (c *Client) get(url string) (map[string]interface{}, error) {
+func (c *Client) get(url string, d interface{}) error {
 	content, err := c.do("GET", url, nil)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	var d map[string]interface{}
-	if err := json.Unmarshal(content, &d); err != nil {
-		return nil, err
-	}
-
-	return d, nil
+	return json.Unmarshal(content, d)
 }
 
-func (c *Client) post(url string, body url.Values) (map[string]interface{}, error) {
-	content, err := c.do("POST", url, body)
+func (c *Client) post(u string, req interface{}, d interface{}) error {
+	encoder := form.NewEncoder()
+	body, err := encoder.Encode(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var d map[string]interface{}
-	if err := json.Unmarshal(content, &d); err != nil {
-		return nil, err
-	}
-
-	return d, nil
-}
-
-func (c *Client) Reset(IP, ty string) (*Reset, error) {
-	data := url.Values{}
-	data.Set("type", ty)
-	d, err := c.post("reset/"+IP, data)
+	content, err := c.do("POST", u, body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var r Reset
-	if err := mapstructure.Decode(d["reset"], &r); err != nil {
-		return nil, err
-	}
-	return &r, nil
-}
-
-func (c *Client) Rescue(IP, os string, arch int, authorizedKeys []string) (*Rescue, error) {
-	data := url.Values{}
-	data.Set("os", os)
-	data.Set("arch", strconv.Itoa(arch))
-	for _, key := range authorizedKeys {
-		data.Add("authorized_key", key)
-	}
-	d, err := c.post(fmt.Sprintf("boot/%s/rescue", IP), data)
-	if err != nil {
-		return nil, err
-	}
-
-	var r Rescue
-	if err := mapstructure.Decode(d["rescue"], &r); err != nil {
-		return nil, err
-	}
-	return &r, nil
+	return json.Unmarshal(content, d)
 }

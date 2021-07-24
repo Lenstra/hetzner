@@ -1,0 +1,15 @@
+[
+    {
+        "storagebox": {
+            "cancelled": false,
+            "id": 123,
+            "linked_server": 4567,
+            "location": "FSN1",
+            "locked": false,
+            "login": "u1234",
+            "name": "",
+            "paid_until": "2021-12-31",
+            "product": "BX10 - inclusive"
+        }
+    }
+]

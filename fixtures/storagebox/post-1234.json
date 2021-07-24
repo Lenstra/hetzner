@@ -1,0 +1,24 @@
+{
+    "storagebox": {
+        "cancelled": false,
+        "disk_quota": 102400,
+        "disk_usage": 0,
+        "disk_usage_data": 0,
+        "disk_usage_snapshots": 0,
+        "external_reachability": false,
+        "host_system": "FSN1-BX123",
+        "id": 1234,
+        "linked_server": 5678,
+        "location": "FSN1",
+        "locked": false,
+        "login": "u12345",
+        "name": "hello",
+        "paid_until": "2021-12-31",
+        "product": "BX10 - inclusive",
+        "samba": false,
+        "server": "u12345.your-storagebox.de",
+        "ssh": false,
+        "webdav": false,
+        "zfs": false
+    }
+}

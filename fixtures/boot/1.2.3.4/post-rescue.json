@@ -1,0 +1,12 @@
+{
+    "rescue": {
+        "server_ip": "1.2.3.4",
+        "server_number": 1234,
+        "os": "linux",
+        "arch": 64,
+        "active": true,
+        "password": "secret",
+        "authorized_key": [],
+        "host_key": []
+    }
+}

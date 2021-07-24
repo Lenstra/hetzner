@@ -1,0 +1,25 @@
+[
+    {
+        "server": {
+            "cancelled": false,
+            "dc": "FSN1-DC1",
+            "ip": [
+                "1.2.3.4"
+            ],
+            "linked_storagebox": 1234,
+            "paid_until": "2021-12-31",
+            "product": "AX41-NVMe",
+            "server_ip": "1.2.3.4",
+            "server_name": "",
+            "server_number": 12345,
+            "status": "ready",
+            "subnet": [
+                {
+                    "ip": "::1",
+                    "mask": "128"
+                }
+            ],
+            "traffic": "unlimited"
+        }
+    }
+]

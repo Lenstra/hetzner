@@ -1,0 +1,31 @@
+{
+    "server": {
+        "cancelled": false,
+        "cpanel": false,
+        "dc": "FSN1-DC1",
+        "hot_swap": false,
+        "ip": [
+            "1.2.3.4"
+        ],
+        "linked_storagebox": 1234,
+        "paid_until": "2021-12-31",
+        "plesk": false,
+        "product": "AX41-NVMe",
+        "rescue": true,
+        "reset": true,
+        "server_ip": "1.2.3.4",
+        "server_name": "hello",
+        "server_number": 12345,
+        "status": "ready",
+        "subnet": [
+            {
+                "ip": "::1",
+                "mask": "128"
+            }
+        ],
+        "traffic": "unlimited",
+        "vnc": true,
+        "windows": false,
+        "wol": true
+    }
+}
