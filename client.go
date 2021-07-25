@@ -12,6 +12,7 @@ import (
 	"github.com/go-playground/form"
 
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
+	"github.com/hashicorp/go-hclog"
 )
 
 func Bool(b bool) *bool {
@@ -28,6 +29,7 @@ func String(s string) *string {
 
 type Config struct {
 	Address  string
+	Logger   hclog.Logger
 	User     string
 	Password string
 }
@@ -35,6 +37,7 @@ type Config struct {
 type Client struct {
 	address, user, password string
 	client                  *http.Client
+	logger                  hclog.Logger
 }
 
 func DefaultConfig() *Config {
@@ -55,6 +58,12 @@ func NewClient(config *Config) *Client {
 	c.address = config.Address
 	c.user = config.User
 	c.password = config.Password
+
+	if config.Logger == nil {
+		c.logger = hclog.NewNullLogger()
+	} else {
+		c.logger = config.Logger
+	}
 
 	if !strings.HasSuffix(c.address, "/") {
 		c.address += "/"
@@ -88,6 +97,8 @@ func (c *Client) do(method, url string, body url.Values) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	c.logger.Debug("Got response", "method", method, "url", url, "status", resp.Status, "content", string(content))
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("%s: %s", resp.Status, content)
