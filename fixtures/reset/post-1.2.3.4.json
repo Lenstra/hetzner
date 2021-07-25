@@ -1,6 +1,6 @@
 {
-    "reset": {
-        "server_ip": "1.2.3.4",
-        "type": "hw"
-    }
+  "reset": {
+    "server_ip": "1.2.3.4",
+    "type": "hw"
+  }
 }

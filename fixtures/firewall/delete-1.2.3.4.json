@@ -1,0 +1,10 @@
+{
+  "firewall": {
+    "port": "main",
+    "rules": {},
+    "server_ip": "1.2.3.4",
+    "server_number": 1234,
+    "status": "in process",
+    "whitelist_hos": true
+  }
+}

@@ -1,0 +1,1 @@
+rules.input%5B0%5D.action=accept&rules.input%5B0%5D.dst_port=80&rules.input%5B0%5D.ip_version=ipv4&rules.input%5B0%5D.name=rule+1&rules.input%5B0%5D.src_ip=1.1.1.1&rules.input%5B1%5D.action=accept&rules.input%5B1%5D.dst_port=3306&rules.input%5B1%5D.ip_version=ipv4&rules.input%5B1%5D.name=Allow+MySQL&status=active&whitelist_hos=false

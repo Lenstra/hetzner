@@ -89,7 +89,7 @@ func (c *Client) do(method, url string, body url.Values) ([]byte, error) {
 		return nil, err
 	}
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("%s: %s", resp.Status, content)
 	}
 	return content, nil
@@ -124,5 +124,13 @@ func (c *Client) post(u string, req interface{}, d interface{}) error {
 		return err
 	}
 
+	return json.Unmarshal(content, d)
+}
+
+func (c *Client) delete(url string, d interface{}) error {
+	content, err := c.do("DELETE", url, nil)
+	if err != nil {
+		return err
+	}
 	return json.Unmarshal(content, d)
 }

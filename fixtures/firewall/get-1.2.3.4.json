@@ -1,0 +1,35 @@
+{
+  "firewall": {
+    "port": "main",
+    "rules": {
+      "input": [
+        {
+          "action": "accept",
+          "dst_ip": "0.0.0.0/0",
+          "dst_port": "22",
+          "ip_version": "ipv4",
+          "name": "Allow SSH",
+          "protocol": "tcp",
+          "src_ip": "0.0.0.0/0",
+          "src_port": "0-65535",
+          "tcp_flags": null
+        },
+        {
+          "action": "accept",
+          "dst_ip": "0.0.0.0/0",
+          "dst_port": "443",
+          "ip_version": "ipv4",
+          "name": "Allow HTTPS",
+          "protocol": null,
+          "src_ip": "0.0.0.0/0",
+          "src_port": "0-65535",
+          "tcp_flags": null
+        }
+      ]
+    },
+    "server_ip": "1.2.3.4",
+    "server_number": 1234,
+    "status": "disabled",
+    "whitelist_hos": true
+  }
+}

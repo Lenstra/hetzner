@@ -120,3 +120,36 @@ type StorageBoxRequest struct {
 	ExternalReachability *bool   `form:"external_reachability,omitempty"`
 	ZFS                  *bool   `form:"zfs,omitempty"`
 }
+
+type Firewall struct {
+	ServerIP     string        `json:"server_ip"`
+	ServerNumber int           `json:"server_number"`
+	Status       string        `json:"status"`
+	WhitelistHOS bool          `json:"whitelist_hos"`
+	Port         string        `json:"port"`
+	Rules        FirewallRules `json:"rules"`
+}
+
+type FirewallRules struct {
+	Input []*FirewallRule `json:"input" form:"input"`
+}
+
+type FirewallRule struct {
+	IPVersion string  `json:"ip_version" form:"ip_version"`
+	Name      string  `json:"name" form:"name"`
+	DstIP     *string `json:"dst_ip" form:"dst_ip"`
+	SrcIP     *string `json:"src_ip" form:"src_ip"`
+	DstPort   *string `json:"dst_port" form:"dst_port"`
+	SrcPort   *string `json:"src_port" form:"src_port"`
+	Protocol  *string `json:"protocol" form:"protocol"`
+	TcpFlags  *string `json:"tcp_flags" form:"tcp_flags"`
+	Action    string  `json:"action" form:"action"`
+}
+
+type FirewallRequest struct {
+	ServerIP     string        `form:"-"`
+	Status       *string       `form:"status"`
+	WhitelistHOS *bool         `form:"whitelist_hos"`
+	TemplateID   *string       `form:"template_id"`
+	Rules        FirewallRules `form:"rules"`
+}
