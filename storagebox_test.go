@@ -26,7 +26,8 @@ func testServer(t *testing.T) (*Client, *httptest.Server) {
 		last := parts[len(parts)-1]
 		parts[len(parts)-1] = fmt.Sprintf("%s-req-%s.txt", method, last)
 
-		path := fmt.Sprintf("fixtures%s", strings.Join(parts, "/"))
+		path := "fixtures" + strings.Join(parts, "/")
+		log.Printf("Checking request against %s", path)
 		expected, err := os.ReadFile(path)
 		if err != nil {
 			var pathErr *os.PathError

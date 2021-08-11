@@ -126,3 +126,30 @@ func TestFirewallClient_Delete(t *testing.T) {
 	}
 	require.Equal(t, expected, resp)
 }
+
+func TestFirewallClient_EmptyRules(t *testing.T) {
+	client, s := testServer(t)
+	defer s.Close()
+
+	expected := &Firewall{
+		ServerIP:     "2.3.4.5",
+		ServerNumber: 1234,
+		WhitelistHOS: true,
+		Port:         "main",
+		Status:       "disabled",
+	}
+
+	resp, err := client.Firewall().Info("2.3.4.5")
+	require.NoError(t, err)
+	require.Equal(t, expected, resp)
+
+	resp, err = client.Firewall().Update(&FirewallRequest{
+		ServerIP: "2.3.4.5",
+	})
+	require.NoError(t, err)
+	require.Equal(t, expected, resp)
+
+	resp, err = client.Firewall().Delete("2.3.4.5")
+	require.NoError(t, err)
+	require.Equal(t, expected, resp)
+}
