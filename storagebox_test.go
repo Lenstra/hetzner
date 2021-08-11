@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -37,8 +38,10 @@ func testServer(t *testing.T) (*Client, *httptest.Server) {
 		parts = strings.Split(r.URL.Path, "/")
 		last = parts[len(parts)-1]
 		parts[len(parts)-1] = fmt.Sprintf("%s-%s.json", method, last)
-		path = strings.Join(parts, "/")
-		http.ServeFile(w, r, fmt.Sprintf("fixtures/%s", path))
+		path = "fixtures" + strings.Join(parts, "/")
+
+		log.Printf("Serving %s as response", path)
+		http.ServeFile(w, r, path)
 	}))
 
 	client := NewClient(&Config{

@@ -47,7 +47,18 @@ func (f *FirewallClient) Update(req *FirewallRequest) (*Firewall, error) {
 	}
 
 	var res Firewall
-	if err := mapstructure.Decode(d, &res); err != nil {
+	config := &mapstructure.DecoderConfig{
+		Metadata: nil,
+		Result:   &res,
+		TagName: "json",
+	}
+
+	decoder, err := mapstructure.NewDecoder(config)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := decoder.Decode(d); err != nil {
 		return nil, err
 	}
 
